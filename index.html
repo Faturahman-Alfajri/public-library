@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Campus Library (Public) - Prototype</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      :root {
+        --uii-blue: #0b4aa2;
+        --uii-soft: #eef5ff;
+        --uii-text: #0f172a;
+      }
+      body {
+        background: var(--uii-soft);
+        color: var(--uii-text);
+      }
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        background: rgba(11, 74, 162, 0.95);
+      }
+      .hero {
+        background: linear-gradient(135deg, rgba(11, 74, 162, 1), rgba(10, 120, 200, 0.95));
+        color: #fff;
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      .hero-img {
+        background: url("img/hero-library.jpg") center/cover no-repeat;
+        min-height: 260px;
+        border-radius: 20px;
+      }
+      .card-soft {
+        border: 0;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(2, 6, 23, 0.08);
+      }
+      .badge-status {
+        font-size: 0.8rem;
+      }
+      .muted-small {
+        font-size: 0.92rem;
+        color: #475569;
+      }
+      .section-title {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAV -->
+    <nav class="navbar navbar-expand-lg navbar-dark nav-blur sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#home">Campus Library</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="navbar-nav ms-auto gap-1">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">Background</a></li>
+            <li class="nav-item"><a class="nav-link" href="#catalog">Catalog</a></li>
+            <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
+            <li class="nav-item"><a class="nav-link" href="#complaint">Complaint</a></li>
+            <li class="nav-item"><a class="nav-link" href="#developer">Developer</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      <div id="globalAlert" class="alert d-none" role="alert"></div>
+
+      <!-- HERO / HOME -->
+      <section id="home" class="mb-4">
+        <div class="hero p-4 p-md-5 card-soft">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-7">
+              <h1 class="display-6 fw-bold mb-2">One Search for Campus Library</h1>
+              <p class="mb-4" style="opacity: 0.92">Public prototype inspired by a modern campus library portal: quick catalog search, clear availability, and a complaint channel for better service.</p>
+
+              <div class="row g-2 align-items-end">
+                <div class="col-md-8">
+                  <label class="form-label mb-1">Search books</label>
+                  <input id="homeSearch" class="form-control form-control-lg" placeholder="Example: Statistics, Calculus, Database..." />
+                </div>
+                <div class="col-md-4 d-grid">
+                  <button id="btnHomeSearch" class="btn btn-light btn-lg fw-semibold">Search</button>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap gap-2 mt-3">
+                <a class="btn btn-outline-light" href="#catalog">Open Catalog</a>
+                <a class="btn btn-outline-light" href="#complaint">Submit Complaint</a>
+              </div>
+            </div>
+
+            <div class="col-lg-5">
+              <div class="hero-img"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT / BACKGROUND -->
+      <section id="about" class="mb-4">
+        <div class="bg-white card-soft p-4 p-md-5">
+          <h2 class="section-title h3 mb-3">Background</h2>
+          <p class="muted-small mb-3">Many campus members still face uncertainty about book availability and where to find it on shelves. This public system focuses on fast information access and a structured feedback channel.</p>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="p-3 bg-light rounded-4">
+                <div class="fw-semibold">Problem</div>
+                <div class="muted-small">Availability unclear, searching takes time, complaints scattered.</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 bg-light rounded-4">
+                <div class="fw-semibold">Goal</div>
+                <div class="muted-small">Faster search/filter, clear status + location, better service via complaints.</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 bg-light rounded-4">
+                <div class="fw-semibold">Scope</div>
+                <div class="muted-small">Public website only (no admin UI). Catalog is dummy; complaints are stored online.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATALOG -->
+      <section id="catalog" class="mb-4">
+        <div class="bg-white card-soft p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <h2 class="section-title h3 mb-1">Book Catalog</h2>
+              <div class="muted-small">Search and filter availability + shelf location.</div>
+            </div>
+          </div>
+
+          <div class="row g-2 g-md-3 align-items-end mt-2">
+            <div class="col-md-6">
+              <label class="form-label">Search</label>
+              <input id="catalogSearch" class="form-control" placeholder="Title / author / keyword..." />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Category</label>
+              <select id="catalogCategory" class="form-select">
+                <option value="">All</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Status</label>
+              <select id="catalogStatus" class="form-select">
+                <option value="">All</option>
+                <option value="available">Available</option>
+                <option value="borrowed">Borrowed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between mt-3">
+            <div class="muted-small" id="catalogCount">Showing 0 books</div>
+            <button id="btnResetFilters" class="btn btn-sm btn-outline-secondary">Reset</button>
+          </div>
+
+          <div id="catalogGrid" class="row g-3 mt-1"></div>
+        </div>
+      </section>
+
+      <!-- NEWS -->
+      <section id="news" class="mb-4">
+        <div class="bg-white card-soft p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h2 class="section-title h3 mb-0">News & Updates</h2>
+            <div class="muted-small">Dummy news for prototype</div>
+          </div>
+
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              <div class="p-3 bg-light rounded-4 h-100">
+                <div class="fw-bold">Library Orientation Week</div>
+                <div class="muted-small">New students: learn how to use catalog and digital resources.</div>
+                <div class="mt-2"><span class="badge text-bg-secondary">Announcement</span></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 bg-light rounded-4 h-100">
+                <div class="fw-bold">Extended Reading Hours</div>
+                <div class="muted-small">Weekend study support with extended opening hours.</div>
+                <div class="mt-2"><span class="badge text-bg-secondary">Info</span></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 bg-light rounded-4 h-100">
+                <div class="fw-bold">New Book Arrivals</div>
+                <div class="muted-small">New titles added for statistics, computing, and research methods.</div>
+                <div class="mt-2"><span class="badge text-bg-secondary">Update</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HELP US / COMPLAINT -->
+      <section id="complaint" class="mb-4">
+        <div class="bg-white card-soft p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <h2 class="section-title h3 mb-1">Help Us Improve</h2>
+              <div class="muted-small">Submit service complaints — saved online to Google Sheets.</div>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              <label class="form-label">Name / Student ID</label>
+              <input id="aduUser" class="form-control" placeholder="Example: Faturahman Alfajri / 246xxxxx" maxlength="40" required />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Category</label>
+              <select id="aduCategory" class="form-select">
+                <option>Borrowing Queue</option>
+                <option>Book Availability</option>
+                <option>Reading Room Facilities</option>
+                <option>Reservation System</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="col-md-12">
+              <label class="form-label">Complaint Details</label>
+              <textarea id="aduText" class="form-control" rows="5" placeholder="Write your complaint..."></textarea>
+              <div class="muted-small mt-1">Tip: keep it short and clear.</div>
+            </div>
+
+            <div class="col-md-12 d-grid d-md-flex justify-content-md-end gap-2">
+              <button id="btnClearAduan" class="btn btn-outline-secondary">Reset</button>
+              <button id="btnSendAduan" class="btn btn-primary" style="background: var(--uii-blue); border-color: var(--uii-blue)">Submit</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEVELOPER / DATA DIRI -->
+      <section id="developer" class="mb-4">
+        <div class="bg-white card-soft p-4 p-md-5">
+          <h2 class="section-title h3 mb-3">Developer Profile</h2>
+          <div class="row g-3">
+            <div class="col-md-12">
+              <div class="fs-4 fw-bold">Faturahman Alfajri</div>
+              <div class="muted-small mb-3">Statistics Undergraduate • Universitas Islam Indonesia</div>
+
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <div class="p-3 bg-light rounded-4">
+                    <div class="fw-semibold">Project</div>
+                    <div class="muted-small">Public Library MIS Prototype</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="p-3 bg-light rounded-4">
+                    <div class="fw-semibold">Tools</div>
+                    <div class="muted-small">Bootstrap, GitHub Pages, Google Sheets</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="p-3 bg-light rounded-4">
+                    <div class="fw-semibold">Background</div>
+                    <div class="muted-small">Inspired by the campus library portal concept: one-search access, digital services, and structured feedback for continuous improvement.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-3 muted-small">Contact: 24611042@students.uii.ac.id</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="pb-4">
+        <div class="text-center muted-small">© 2026 Campus Library Prototype • Public Information System • Built for class presentation</div>
+      </footer>
+    </main>
+
+    <script>
+      // 1) PASTE YOUR APPS SCRIPT WEB APP URL HERE (ends with /exec)
+      const COMPLAINT_API_URL = "https://script.google.com/macros/s/AKfycbw0jsyavkjq2jlexRLCdW7q6fjK3_W3LTtsrhXlGNbmiciYgX0SoQSGQLuERYAvstCHoQ/exec";
+
+      // Dummy books (10)
+      const DB = {
+        categories: ["Statistics", "Computer Science", "Mathematics", "Management", "Social Science"],
+        books: [
+          {
+            id: "BK-001",
+            title: "Introduction to Basic Statistics",
+            author: "A. Wijaya",
+            category: "Statistics",
+            year: 2021,
+            location: "Floor 2 - Shelf S1",
+            copiesTotal: 5,
+            copiesAvailable: 2,
+            image: "img/bk-001.png",
+            keywords: ["statistics", "descriptive"],
+            desc: "A beginner-friendly introduction to statistics.",
+          },
+          {
+            id: "BK-002",
+            title: "Data Science for Beginners",
+            author: "R. Pratama",
+            category: "Computer Science",
+            year: 2022,
+            location: "Floor 2 - Shelf C2",
+            copiesTotal: 4,
+            copiesAvailable: 0,
+            image: "img/bk-002.png",
+            keywords: ["data science", "python"],
+            desc: "Data pipelines, visualization, and basic ML concepts.",
+          },
+          {
+            id: "BK-003",
+            title: "Advanced Integral Calculus",
+            author: "S. Hidayat",
+            category: "Mathematics",
+            year: 2019,
+            location: "Floor 1 - Shelf M3",
+            copiesTotal: 3,
+            copiesAvailable: 1,
+            image: "img/bk-003.png",
+            keywords: ["integral", "riemann"],
+            desc: "Definite integrals and the Fundamental Theorem of Calculus.",
+          },
+          {
+            id: "BK-004",
+            title: "Operations Management",
+            author: "D. Lestari",
+            category: "Management",
+            year: 2020,
+            location: "Floor 1 - Shelf MN1",
+            copiesTotal: 6,
+            copiesAvailable: 6,
+            image: "img/bk-004.png",
+            keywords: ["operations", "quality"],
+            desc: "Core concepts in operations and quality management.",
+          },
+          {
+            id: "BK-005",
+            title: "Social Research Methodology",
+            author: "B. Saputra",
+            category: "Social Science",
+            year: 2018,
+            location: "Floor 3 - Shelf SS2",
+            copiesTotal: 2,
+            copiesAvailable: 1,
+            image: "img/bk-005.png",
+            keywords: ["sampling", "survey"],
+            desc: "Study design, sampling, and basic analysis for social research.",
+          },
+          {
+            id: "BK-006",
+            title: "Database Systems Essentials",
+            author: "M. Rahman",
+            category: "Computer Science",
+            year: 2021,
+            location: "Floor 2 - Shelf DB1",
+            copiesTotal: 5,
+            copiesAvailable: 3,
+            image: "img/bk-006.png",
+            keywords: ["mysql", "sql", "database"],
+            desc: "Relational databases, SQL basics, and system fundamentals.",
+          },
+          {
+            id: "BK-007",
+            title: "Probability & Random Processes",
+            author: "N. Putri",
+            category: "Statistics",
+            year: 2020,
+            location: "Floor 2 - Shelf S2",
+            copiesTotal: 4,
+            copiesAvailable: 2,
+            image: "img/bk-007.png",
+            keywords: ["probability", "random"],
+            desc: "Probability foundations with examples and applications.",
+          },
+          {
+            id: "BK-008",
+            title: "Linear Algebra in Practice",
+            author: "T. Kurnia",
+            category: "Mathematics",
+            year: 2022,
+            location: "Floor 1 - Shelf M1",
+            copiesTotal: 3,
+            copiesAvailable: 0,
+            image: "img/bk-008.png",
+            keywords: ["matrix", "vector"],
+            desc: "Matrices, vectors, and practical applications.",
+          },
+          {
+            id: "BK-009",
+            title: "Web Development Fundamentals",
+            author: "I. Prakoso",
+            category: "Computer Science",
+            year: 2019,
+            location: "Floor 2 - Shelf WEB",
+            copiesTotal: 6,
+            copiesAvailable: 4,
+            image: "img/bk-009.png",
+            keywords: ["html", "css", "bootstrap"],
+            desc: "HTML, CSS, and Bootstrap foundations for web UI.",
+          },
+          {
+            id: "BK-010",
+            title: "Applied Machine Learning",
+            author: "S. Hartono",
+            category: "Computer Science",
+            year: 2023,
+            location: "Floor 2 - Shelf ML1",
+            copiesTotal: 4,
+            copiesAvailable: 1,
+            image: "img/bk-010.png",
+            keywords: ["ml", "classification"],
+            desc: "Practical ML workflows and model evaluation.",
+          },
+        ],
+      };
+
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => document.querySelectorAll(s);
+
+      function showAlert(msg, type = "warning") {
+        const el = $("#globalAlert");
+        el.className = `alert alert-${type}`;
+        el.textContent = msg;
+        el.classList.remove("d-none");
+        setTimeout(() => el.classList.add("d-none"), 2500);
+      }
+
+      function statusOf(b) {
+        return b.copiesAvailable > 0 ? "available" : "borrowed";
+      }
+      function statusBadge(st) {
+        return st === "available" ? `<span class="badge text-bg-success badge-status">Available</span>` : `<span class="badge text-bg-secondary badge-status">Borrowed</span>`;
+      }
+
+      function fillCategories() {
+        $("#catalogCategory").innerHTML = `<option value="">All</option>`;
+        $("#catalogCategory").insertAdjacentHTML("beforeend", DB.categories.map((c) => `<option value="${c}">${c}</option>`).join(""));
+      }
+
+      function bookCard(b) {
+        const st = statusOf(b);
+        const cover = b.image || "img/placeholder.png";
+        return `
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-soft h-100">
+            <img src="${cover}" class="card-img-top" alt="Cover" style="height:170px;object-fit:cover;">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <h3 class="h6 fw-bold mb-1">${b.title}</h3>
+                ${statusBadge(st)}
+              </div>
+              <div class="text-secondary">${b.author}</div>
+              <div class="mt-2 muted-small">
+                <span class="badge text-bg-light border">${b.category}</span>
+                <span class="ms-1">• ${b.year}</span>
+              </div>
+              <div class="mt-2 muted-small">Location: ${b.location}</div>
+              <div class="mt-2 muted-small">Available: <b>${b.copiesAvailable}</b> / ${b.copiesTotal}</div>
+              <div class="mt-2 muted-small">${b.desc}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      function filterBooks({ q, category, status }) {
+        q = (q || "").trim().toLowerCase();
+        return DB.books.filter((b) => {
+          const st = statusOf(b);
+          const matchQ = !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q) || (b.keywords || []).some((k) => k.toLowerCase().includes(q));
+          const matchCat = !category || b.category === category;
+          const matchStatus = !status || st === status;
+          return matchQ && matchCat && matchStatus;
+        });
+      }
+
+      function renderCatalog() {
+        const q = $("#catalogSearch").value;
+        const category = $("#catalogCategory").value;
+        const status = $("#catalogStatus").value;
+
+        const list = filterBooks({ q, category, status });
+        $("#catalogCount").textContent = `Showing ${list.length} books`;
+        $("#catalogGrid").innerHTML = list.map(bookCard).join("");
+      }
+
+      // Complaint submission to Google Sheets (Apps Script Web App)
+      function sendComplaint() {
+        console.log("SUBMIT CLICKED");
+
+        const raw = $("#aduUser").value.trim();
+
+        // Name OR Student ID (digits only 8-12)
+        const isName = /^[A-Za-z .'\-]{3,40}$/.test(raw);
+        const isNim = /^\d{8,12}$/.test(raw);
+
+        if (!(isName || isNim)) {
+          showAlert("Enter a valid Name (letters only) OR Student ID (8–12 digits).", "danger");
+          $("#aduUser").focus();
+          return;
+        }
+
+        const user = raw;
+        const category = $("#aduCategory").value;
+        const complaint = ($("#aduText").value || "").trim();
+
+        if (!COMPLAINT_API_URL || !COMPLAINT_API_URL.includes("/exec")) {
+          showAlert("ERROR: COMPLAINT_API_URL is not valid.", "danger");
+          return;
+        }
+
+        const payload = JSON.stringify({
+          user,
+          category,
+          complaint: complaint || "(empty)",
+          source: "github-pages",
+        });
+
+        // hidden iframe so page doesn't redirect
+        let iframe = document.querySelector("#hidden_iframe");
+        if (!iframe) {
+          iframe = document.createElement("iframe");
+          iframe.name = "hidden_iframe";
+          iframe.id = "hidden_iframe";
+          iframe.style.display = "none";
+          document.body.appendChild(iframe);
+        }
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = COMPLAINT_API_URL;
+        form.target = "hidden_iframe";
+
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "data";
+        input.value = payload;
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+        form.remove();
+
+        showAlert("Complaint submitted ✅ (check Google Sheets)", "success");
+        $("#aduUser").value = "";
+        $("#aduCategory").selectedIndex = 0; // back to first option
+        $("#aduText").value = "";
+      }
+
+      function attachHandlers() {
+        $("#btnHomeSearch").addEventListener("click", () => {
+          $("#catalogSearch").value = $("#homeSearch").value;
+          location.hash = "#catalog";
+          renderCatalog();
+        });
+        $("#homeSearch").addEventListener("keydown", (e) => {
+          if (e.key === "Enter") $("#btnHomeSearch").click();
+        });
+
+        ["#catalogSearch", "#catalogCategory", "#catalogStatus"].forEach((sel) => {
+          $(sel).addEventListener("input", renderCatalog);
+          $(sel).addEventListener("change", renderCatalog);
+        });
+
+        $("#btnResetFilters").addEventListener("click", () => {
+          $("#catalogSearch").value = "";
+          $("#catalogCategory").value = "";
+          $("#catalogStatus").value = "";
+          renderCatalog();
+        });
+
+        $("#btnSendAduan").addEventListener("click", sendComplaint);
+        $("#btnClearAduan").addEventListener("click", () => {
+          $("#aduUser").value = "";
+          $("#aduText").value = "";
+          $("#aduCategory").selectedIndex = 0;
+        });
+      }
+
+      // boot
+      fillCategories();
+      attachHandlers();
+      renderCatalog();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
